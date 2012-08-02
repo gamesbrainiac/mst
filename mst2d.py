@@ -77,7 +77,7 @@ def draw_prim(pl, edges):
     pp.show()
 
 
-def pair_generator(n = 10, bound = 10.0):
+def pair_generator(n = 10, bound = 5.0):
     pl = point_generator(n, bound)
     pairlist = [pair(p, point((p.x + 1.0), p.y)) for p in pl]
     return pairlist
@@ -116,21 +116,51 @@ def pair_prim(pl):
     return edges, sum
 
 
-def draw_pair_prim(prl, edges, opt_e):
-    pp.figure()
-    for pr in prl:
-        pr.plot('ro', 'bx')
-    for e in edges:
-        p, q = e
-        xs = [p.x, q.x]
-        ys = [p.y, q.y]
-        pp.plot(xs, ys, 'y-', alpha = 1)
-    for e in opt_e:
-        p, q = e
-        xs = [p.x, q.x]
-        ys = [p.y, q.y]
-        pp.plot(xs, ys, 'b-', alpha = 1)       
-    pp.show()
+def draw_pair_prim(prl, edges, opt_e, ifg):
+
+    if ifg:
+        '''plot the first half graph'''
+        pp.figure()
+        pp.subplot(121)
+        for pr in prl:
+            pr.plot('ro', 'bx')
+        
+        for e in edges:
+            p, q = e
+            xs = [p.x, q.x]
+            ys = [p.y, q.y]
+            pp.plot(xs, ys, 'y-', alpha = 1)
+        '''plot the second half graph'''
+        pp.subplot(122)
+        for pr in prl:
+            pr.plot('ro', 'bx')
+        for e in opt_e:
+            p, q = e
+            xs = [p.x, q.x]
+            ys = [p.y, q.y]
+            pp.plot(xs, ys, 'b-', alpha = 1)       
+        pp.show()
+    else:
+        pp.figure()
+        #pp.subplot(121)
+        for pr in prl:
+            pr.plot('ro', 'bx')
+        
+        for e in edges:
+            p, q = e
+            xs = [p.x, q.x]
+            ys = [p.y, q.y]
+            pp.plot(xs, ys, 'y-', alpha = 1)
+#        '''plot the second half graph'''
+#        pp.subplot(122)
+#        for pr in prl:
+#            pr.plot('ro', 'bx')
+        for e in opt_e:
+            p, q = e
+            xs = [p.x, q.x]
+            ys = [p.y, q.y]
+            pp.plot(xs, ys, 'b-', alpha = 1)       
+        pp.show()
 
 def brute_opt_prim(prl):
     opt_sum = float('inf')
@@ -150,12 +180,14 @@ def main_prim():
     edges, sum = prim(pl)
     draw_prim(pl, edges)
     
-def main_pair(np):
+def main_pair(np, ifg):
     prl = pair_generator(np)
     edges, sum = pair_prim(prl)
     opt_edges, sum2 = brute_opt_prim(prl)
-    draw_pair_prim(prl, edges, opt_edges)
+    print(sum/sum2)
     
+    draw_pair_prim(prl, edges, opt_edges, ifg)
+
 #def main_opt(n):
 #    prl = pair_generator(n)
 #    edges, sum1 = pair_prim(prl)
@@ -169,7 +201,7 @@ def main_pair(np):
 #            worst = ratio
 #    print(worst)
 
-main_pair(15)
+main_pair(10, True)
     
  
         
